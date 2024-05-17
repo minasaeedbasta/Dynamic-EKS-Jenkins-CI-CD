@@ -14,7 +14,7 @@ pipeline {
           steps {
             container('kaniko') {
               sh '''
-                /kaniko/executor --context `pwd` --destination ${DOCKERHUB_USERNAME}/nodejs-app-with-dockerfile
+                /kaniko/executor --context `pwd` --destination minabasta/nodejs-app-with-dockerfile
               '''
             }
           }
