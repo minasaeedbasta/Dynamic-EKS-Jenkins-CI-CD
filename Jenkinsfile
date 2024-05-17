@@ -13,9 +13,14 @@ pipeline {
         stage('Build and Push Nodejs Image') {
           steps {
             container('kaniko') {
-              sh '''
-                /kaniko/executor --context `pwd` --destination minabasta/nodejs-app-with-dockerfile
-              '''
+              sh '/kaniko/executor --context `pwd` --destination minabasta/nodejs-app-with-dockerfile'
+            }
+          }
+        }
+        stage('Depoly the app on the cluster') {
+          steps {
+            container('kubectl') {
+              sh 'kubectl apply -f k8s/app.yaml'
             }
           }
         }
