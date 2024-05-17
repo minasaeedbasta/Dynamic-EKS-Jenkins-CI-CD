@@ -19,8 +19,8 @@ module "vpc" {
   cidr = var.vpc_cidr_block
   azs  = slice(data.aws_availability_zones.available.names, 0, 3)
 
-  private_subnets = [for subnet in aws_subnet.public_subnets : subnet.id]
-  public_subnets  = [for subnet in aws_subnet.private_subnets : subnet.id]
+  private_subnets = [for subnet in aws_subnet.public_subnets : subnet.cidr_block]
+  public_subnets  = [for subnet in aws_subnet.private_subnets : subnet.cidr_block]
 
   enable_nat_gateway   = true
   single_nat_gateway   = true
@@ -45,6 +45,7 @@ module "eks" {
   cluster_endpoint_public_access           = true
   enable_cluster_creator_admin_permissions = true
   cluster_encryption_config   = {}
+  create_cloudwatch_log_group = false
 
   vpc_id     = module.vpc.vpc_id
   subnet_ids = module.vpc.private_subnets
